@@ -6,37 +6,70 @@ package pkg3dapp;
  */
 public class Util {
 
-    static double drawX=0, drawY=0;
+    static double drawX = 0, drawY = 0;
 
-    static double CalculatePositionX(double[] viewFrom, double[] viewTo, double x, double y, double z) {
-        setStuff(viewFrom, viewTo, x, y, z);
-        return drawX;
+    static double CalculatePositionX(double[] camPos, double[] camDirection, double[] vector) {
+        double[][] camera = LookAt(camPos,camDirection);
+        vector = VectMatrixMult(vector,camera);
+        drawX = vector[0]/vector[1];
+        
+        return drawX ;
     }
 
-    static double CalculatePositionY(double[] viewFrom, double[] viewTo, double x, double y, double z) {
-        setStuff(viewFrom, viewTo, x, y, z);
+    static double CalculatePositionY(double[] camPos, double[] camDirection, double[] vector) {
+        double[][] camera = LookAt(camPos,camDirection);
+        vector = VectMatrixMult(vector,camera);
+        drawY = vector[2]/vector[1];
         return drawY;
     }
 
-    static void setStuff(double[] viewFrom, double[] viewTo, double x, double y, double z) {
-        Vector viewVector = new Vector(viewTo[0] - viewFrom[0], viewTo[1] - viewFrom[1], viewTo[2] - viewFrom[2]);
-        Vector directionVector = new Vector(1, 1, 1);
-        Vector plainVector1 = viewVector.CrossProduct(directionVector);
-        Vector plainVector2 = viewVector.CrossProduct(plainVector1);
 
-        Vector viewToPoint = new Vector(x - viewFrom[0], y - viewFrom[1], z - viewFrom[2]);
+    public static double[][] LookAt(double[] from, double[] to) {
+        double[][] m = new double[4][4];
 
-        double t = (viewVector.x * viewTo[0] + viewVector.y * viewTo[1] + viewVector.z * viewTo[2]
-                - viewVector.x * viewFrom[0] + viewVector.y * viewFrom[1] + viewVector.z * viewFrom[2]
-                / viewVector.x * viewToPoint.x + viewVector.y * viewToPoint.y + viewVector.z * viewToPoint.z);
+        Vector tmp = new Vector(0, 0, 1);
 
-        x = viewFrom[0] + viewToPoint.x * t;
-        y = viewFrom[1] + viewToPoint.y * t;
-        z = viewFrom[2] + viewToPoint.z * t;
+        Vector forward = new Vector(to[0] - from[0], to[1] - from[1], to[2] - from[2]);
+        Vector right = forward.CrossProduct(tmp);
+        Vector up = right.CrossProduct(forward);
 
-        if (t > 0) {
-            drawX = plainVector2.x * x + plainVector2.y * y + plainVector2.z * z;
-            drawY = plainVector1.x * x + plainVector1.y * y + plainVector1.z * z;
+        m[0][0] = right.x;
+        m[0][1] = right.y;
+        m[0][2] = right.z;
+        m[1][0] = forward.x;
+        m[1][1] = forward.y;
+        m[1][2] = forward.z;
+        m[2][0] = up.x;
+        m[2][1] = up.y;
+        m[2][2] = up.z;
+
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                m[i][j]+=10;
+//            }
+//        }
+        
+        m[3][0] = from[0];
+        m[3][1] = from[1];
+        m[3][2] = from[2];
+
+        m[0][3] = 0;
+        m[1][3] = 0;
+        m[2][3] = 0;
+        m[3][3] = 1;
+
+        return m;
+    }
+
+    public static double[] VectMatrixMult(double[] vector,double[][] m) {
+        double[] res = new double[4];
+        for (int j = 0; j < 4; j++) {
+            double temp = 0;
+            for (int k = 0; k < 4; k++) {
+                temp += m[k][j] * vector[k];
+            }
+            res[j] = temp;
         }
+        return res;
     }
 }

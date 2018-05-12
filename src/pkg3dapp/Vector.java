@@ -7,10 +7,9 @@ package pkg3dapp;
 public class Vector {
 
     double x, y, z = 0;
-    double length;
 
     public Vector(double x, double y, double z) {
-        length = Math.sqrt(x * x + y * y + z * z);
+        double length = Math.sqrt(x * x + y * y + z * z);
 
         if (length > 0) {
             this.x = x / length;
@@ -28,4 +27,18 @@ public class Vector {
     public Vector CrossProduct(Vector v) {
         return new Vector(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
+    
+//    public void Transform(double[] v){
+//        x +=v[0];
+//        y+=v[1];
+//        z+=v[2];
+//    }
+//    public void Scale(double[] v){
+//        x+=v[0];
+//        y+=v[1];
+//        z+=v[2];
+//    }
+//    public void Rotate(double angle){
+//        
+//    }
 }

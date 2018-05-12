@@ -1,7 +1,6 @@
 package pkg3dapp;
 
-import java.awt.Color;
-import java.awt.Polygon;
+import java.awt.*;
 
 /**
  *
@@ -21,13 +20,14 @@ public class Polygon3D {
 
     }
     
-    public Polygon2D CreatePolygonObject(double[] viewFrom, double[] viewTo){
+    public Polygon2D to2DPolygon(double[] viewFrom, double[] viewTo){
         double[] x = new double[this.x.length];
         double[] y = new double[this.x.length];
         
         for (int i = 0; i < this.x.length; i++) {
-            x[i] =500+50* Util.CalculatePositionX(viewFrom, viewTo, this.x[i], this.y[i], this.z[i]);
-            y[i] =500+50* Util.CalculatePositionY(viewFrom, viewTo, this.x[i], this.y[i], this.z[i]);
+            double[] temp = new double[]{this.x[i], this.y[i], this.z[i],1};
+            x[i] = Util.CalculatePositionX(viewFrom, viewTo, temp);
+            y[i] = Util.CalculatePositionY(viewFrom, viewTo, temp);
         }
         return new Polygon2D(x,y,c);
     }

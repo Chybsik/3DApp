@@ -16,7 +16,7 @@ public class Polygon2D {
         p.npoints=x.length;
         
         for (int i = 0; i < x.length; i++) {
-            p.addPoint((int)x[i], (int)y[i]);
+            p.addPoint((int)(x[i]*500), (int)(y[i]*500));
         }
     }
     
