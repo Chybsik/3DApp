@@ -27,7 +27,17 @@ public class Vector {
     public Vector CrossProduct(Vector v) {
         return new Vector(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
-    
+
+    public double DotProduct(Vector v) {
+        return this.x * v.x + this.y * v.y + this.z * v.z;
+    }
+
+    public void Invert() {
+        this.x *= -1;
+        this.y *= -1;
+        this.z *= -1;
+    }
+
 //    public void Transform(double[] v){
 //        x +=v[0];
 //        y+=v[1];

@@ -1,6 +1,5 @@
 package pkg3dapp;
 
-import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 /**
