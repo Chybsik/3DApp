@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pkg3dapp;
 
 /**
@@ -10,13 +5,26 @@ package pkg3dapp;
  * @author Timur
  */
 public class Vertex {
-    
-    double x,y,z;
+
+    double x, y, z;
     Vector n;
+    double k;
+//    final String ID;
+
+    public Vertex(double x, double y, double z){//, String ID) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+
+//        this.ID = ID;
+    }
     
-    public Vertex(double x, double y, double z){
-        this.x=x;
-        this.y=y;
-        this.z=z;
+    public Vertex(Vertex v){
+        this.x = v.x;
+        this.y=v.y;
+        this.z=v.z;
+        this.n=new Vector(v.n);
+        this.k=k;
+//        this.ID=v.ID;
     }
 }

@@ -6,18 +6,18 @@ package pkg3dapp;
  */
 public class Util {
 
-    static double[] CalculatePosition(double[][] camera, double[] vector) {
-        double[] res = new double[3];
+    static double[] CalculatePosition(double[][] camera, Vertex v) {
+        double[] result = new double[3];
 //        vector = VectMatrixMult(vector, camera);
-//        res[0] = vector[0] / -vector[2];
-//        res[1] = vector[1] / -vector[2];
+//        result[0] = vector[0] / -vector[2];
+//        result[1] = vector[1] / -vector[2];
         //
 
         Vector forward = new Vector(camera[2][0], camera[2][1], camera[2][2]);
         Vector right = new Vector(camera[0][0], camera[0][1], camera[0][2]);
         Vector up = new Vector(camera[1][0], camera[1][1], camera[1][2]);
 
-        Vector viewToPoint = new Vector(vector[0] - camera[3][0], vector[1] - camera[3][1], vector[2] - camera[3][2]);
+        Vector viewToPoint = new Vector(v.x - camera[3][0], v.y - camera[3][1], v.z - camera[3][2]);
 
         double t = (forward.x * 0 + forward.y * 0 + forward.z * 0
                 - (forward.x * camera[3][0] + forward.y * camera[3][1] + forward.z * camera[3][2]))
@@ -25,22 +25,22 @@ public class Util {
 //        double t = Math.sqrt(viewToPoint.x * viewToPoint.x + viewToPoint.y * viewToPoint.y + viewToPoint.z * viewToPoint.z);
 //        double t = Math.sqrt(vector[0]*vector[0]+vector[1]*vector[1]+vector[2]*vector[2]);
 
-        vector[0] = camera[3][0] + viewToPoint.x * t;
-        vector[1] = camera[3][1] + viewToPoint.y * t;
-        vector[2] = camera[3][2] + viewToPoint.z * t;
+        v.x = camera[3][0] + viewToPoint.x * t;
+        v.y = camera[3][1] + viewToPoint.y * t;
+        v.z = camera[3][2] + viewToPoint.z * t;
 
-        res[0] = up.x * vector[0] + up.y * vector[1] + up.z * vector[2];
-        res[1] = right.x * vector[0] + right.y * vector[1] + right.z * vector[2];
+        result[0] = up.x * v.x + up.y * v.y + up.z * v.z;
+        result[1] = right.x * v.x + right.y * v.y + right.z * v.z;
         //         
 
-        res[0] = (res[0] + 8 / 2) / 8;
-        res[1] = (res[1] + 8 / 2) / 8;
-        res[0] *= 1600;
-        res[1] *= 900;
+        result[0] = (result[0] + 8 / 2) / 8;
+        result[1] = (result[1] + 8 / 2) / 8;
+        result[0] *= 1600;
+        result[1] *= 900;
         
-        res[2] = t;
+        result[2] = t;
 
-        return res;
+        return result;
     }
 
     public static double[][] LookAt(double[] from, double[] to) {
@@ -80,29 +80,29 @@ public class Util {
     }
 
     public static double[] VectMatrixMult(double[] vector, double[][] m) {
-        double[] res = new double[4];
+        double[] result = new double[4];
         for (int j = 0; j < vector.length; j++) {
             double temp = 0;
             for (int k = 0; k < vector.length; k++) {
                 temp += m[k][j] * vector[k];
             }
-            res[j] = temp;
+            result[j] = temp;
         }
-        return res;
+        return result;
     }
 
     public static double[][] MatricesMult(double[][] m1, double[][] m2) {
-        double[][] res = new double[4][4];
+        double[][] result = new double[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 double temp = 0;
                 for (int k = 0; k < 4; k++) {
                     temp += m1[i][k] * m2[k][j];
                 }
-                res[i][j] = temp;
+                result[i][j] = temp;
             }
         }
-        return res;
+        return result;
     }
 
     public static double[][] Translate(double[] vector, double[][] m) {
