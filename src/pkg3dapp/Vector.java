@@ -23,6 +23,10 @@ public class Vector {
         this.y = v.y;
         this.z = v.z;
     }
+    
+    public Vertex toVertex(){
+        return new Vertex(this.x,this.y,this.z);
+    }
 
     /**
      * Метод CrossProduct возвращает векторное произведение this и v
