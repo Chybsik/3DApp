@@ -3,24 +3,21 @@ package pkg3dapp;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author Timur
- */
 public class Polygon3D {
 
     ArrayList<Vertex> p;
     Vector n;
-//    Color c;
 
     public Polygon3D(ArrayList<Vertex> p) {
         this.p = p;
 
-//        this.c = c;
         n = new Vector(p.get(1).x - p.get(0).x, p.get(1).y - p.get(0).y, p.get(1).z - p.get(0).z).CrossProduct(new Vector(p.get(2).x - p.get(1).x, p.get(2).y - p.get(1).y, p.get(2).z - p.get(1).z));
 
     }
 
+    /**
+     * @method to2DPolygon - метод непосредственно осуществляющий проецирование полигона на плоскость отрисовки
+     */
     public Polygon2D to2DPolygon(double[][] camera, Vector lightSource) {
         double[] x = new double[this.p.size()];
         double[] y = new double[this.p.size()];
@@ -49,10 +46,6 @@ public class Polygon3D {
                 p2 = p.get(i);
             }
         }
-
-//        double[] p1Projection = Util.CalculatePosition(camera, new Vertex(p1));
-//        double[] p2Projection = Util.CalculatePosition(camera, new Vertex(p2));
-        //
         double[] originProjection = Util.CalculatePosition(camera, new Vertex(0,0,0));
         double[] lightSourceProjection = Util.CalculatePosition(camera, lightSource.toVertex());
         double[] temp = new double[3];
@@ -69,13 +62,9 @@ public class Polygon3D {
         
         p2Projection[0]*=cos;
         p2Projection[1]*=(1-cos);
-        //
         Color c1 = new Color((int) (255 * p1.k), (int) (255 * p1.k), (int) (255 * p1.k));
         Color c2 = new Color((int) (255 * p2.k), (int) (255 * p2.k), (int) (255 * p2.k));
-
-//        int color = (int)(255*n.DotProduct(lightSource)*-1);
-//        color = color<0?0:color;
-//        Color currentColor = new Color(color,color,color);
+        
         return new Polygon2D(x, y, dist / this.p.size(), p1Projection, p2Projection, c1, c2);
     }
 }

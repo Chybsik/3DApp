@@ -3,7 +3,8 @@ package pkg3dapp;
 import javax.swing.JFrame;
 
 /**
- *
+ * Главное окно
+ * 
  * @author Timur
  */
 public class MainFrame extends JFrame{

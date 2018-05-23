@@ -11,6 +11,11 @@ import javax.swing.JPanel;
 
 /**
  *
+ * @param viewFrom - координаты камеры
+ * @param viewTo - точка в которою направлена камера
+ * @param camera - камера записаная как матрица 4x4
+ * @param lightSource - вектор источника света
+ * @param polygons - набор полигонов
  * @author Timur
  */
 public class Screen extends JPanel implements KeyListener {
@@ -28,7 +33,7 @@ public class Screen extends JPanel implements KeyListener {
         addKeyListener(this);
         setFocusable(true);
 
-        viewFrom = new double[]{10, 10, 10};
+        viewFrom = new double[]{14.1421, 10, 10};
         viewTo = new double[]{0, 0, 0};
         
         lightSource = new Vector(-10,-5,-10);
@@ -47,10 +52,6 @@ public class Screen extends JPanel implements KeyListener {
         ArrayList<Vertex> vertices = new ArrayList<>(Arrays.asList(v1,v2,v3,v4,v5,v6,v7,v8));
         
         polygons = new ArrayList<>();
-        
-//        polygons.add(new Polygon3D(new ArrayList(Arrays.asList(v2,v3,v4))));
-//        polygons.add(new Polygon3D(new ArrayList(Arrays.asList(v1,v3,v2))));
-//        polygons.add(new Polygon3D(new ArrayList(Arrays.asList(v1,v4,v3))));
         
         polygons.add(new Polygon3D(new ArrayList(Arrays.asList(v4,v3,v2,v5))));
         polygons.add(new Polygon3D(new ArrayList(Arrays.asList(v2,v3,v1,v8))));
@@ -77,9 +78,11 @@ public class Screen extends JPanel implements KeyListener {
         }
     }
 
+    /**
+     * paintComponent - метод проецирующий все полигоны на плоскость отрисовки
+     */
     @Override
     public void paintComponent(Graphics g) {
-//        super.paintComponent(g);
         
         g.clearRect(0, 0, 1600, 900);
 
@@ -87,12 +90,6 @@ public class Screen extends JPanel implements KeyListener {
         for (int i = 0; i < polygons2D.length; i++) {
             polygons2D[i] = polygons.get(i).to2DPolygon(camera,lightSource);
         }
-
-//        Polygon2D[] temp = new Polygon2D[polygons2D.length];
-//        
-//        for (int i = 0; i < polygons2D.length; i++) {
-//            temp[i]=polygons2D[i];
-//        }
 
         int[] order = new int[polygons2D.length];
         for (int i = 0; i < polygons2D.length; i++) {
@@ -115,11 +112,10 @@ public class Screen extends JPanel implements KeyListener {
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    /**
+     * @method keyPressed - вызываемый клавишами стрелок метод осуществляющий поворот камеры вокруг центра сцены
+     * @param e 
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -140,12 +136,15 @@ public class Screen extends JPanel implements KeyListener {
                 repaint();
                 break;
         }
+    }
 
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public void keyTyped(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
