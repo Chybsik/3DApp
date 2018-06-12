@@ -6,6 +6,36 @@ package pkg3dapp;
  */
 public class Util {
 
+    /**
+     *
+     * @param o - точка начала луча
+     * @param r - вектор луча
+     * @param p - вершина треугольника
+     * @return
+     */
+    static boolean rayQuadIntersect(Vertex o, Vector r,  Polygon3D poly) {
+        //Вычисление D составляющей уравнения плоскости
+        double d = poly.n.DotProduct(poly.p.get(0).toVector());
+        //Вычисление расстояния до плоскости
+        if (poly.n.DotProduct(r) != 0) {
+            double t = (poly.n.DotProduct(o.toVector()) + d) / poly.n.DotProduct(r);
+            //Находится ли четырехугольник "за" лучом
+            if (t < 0) {
+                return false;
+            }
+            //Вычисление точки пересечения
+            Vertex pHit = new Vertex(o.x + t * r.x, o.y + t * r.y, o.z + t * r.z);
+            //Находится ли точка пересечения в четырехугольнике
+            boolean temp = true;
+            for (int i = 0; i < poly.edges.size(); i++) {
+                Vector c = new Vector(pHit.x-poly.p.get(i).x,pHit.y-poly.p.get(i).y,pHit.z-poly.p.get(i).z);
+                temp&=poly.n.DotProduct(poly.edges.get(i).CrossProduct(c))>=0;
+            }
+            return temp;
+        }
+        return false;
+    }
+
     static double[] CalculatePosition(double[][] camera, Vertex v) {
         double[] result = new double[3];
 //        vector = VectMatrixMult(vector, camera);
@@ -35,9 +65,9 @@ public class Util {
 
         result[0] = (result[0] + 8 / 2) / 8;
         result[1] = (result[1] + 8 / 2) / 8;
-        result[0] *= 1600;
+        result[0] *= 900;
         result[1] *= 900;
-        
+
         result[2] = t;
 
         return result;
@@ -61,12 +91,7 @@ public class Util {
         m[2][0] = forward.x;
         m[2][1] = forward.y;
         m[2][2] = forward.z;
-
-//        for (int i = 0; i < 3; i++) {
-//            for (int j = 0; j < 3; j++) {
-//                m[i][j]+=10;
-//            }
-//        }
+        
         m[3][0] = from[0];
         m[3][1] = from[1];
         m[3][2] = from[2];
@@ -85,6 +110,18 @@ public class Util {
             double temp = 0;
             for (int k = 0; k < vector.length; k++) {
                 temp += m[k][j] * vector[k];
+            }
+            result[j] = temp;
+        }
+        return result;
+    }
+    
+    public static double[] VertexMatrixMult(double[] vertex, double[][] m) {
+        double[] result = new double[3];
+        for (int j = 0; j < vertex.length; j++) {
+            double temp = 0;
+            for (int k = 0; k < vertex.length; k++) {
+                temp += m[k][j] * vertex[k];
             }
             result[j] = temp;
         }

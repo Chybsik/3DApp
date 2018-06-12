@@ -11,5 +11,4 @@ public class Main {
         Screen s = new Screen();
         f.add(s);
     }
-
 }

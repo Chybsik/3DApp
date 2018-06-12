@@ -6,13 +6,21 @@ import java.util.ArrayList;
 public class Polygon3D {
 
     ArrayList<Vertex> p;
+    ArrayList<Vector> edges;
     Vector n;
 
     public Polygon3D(ArrayList<Vertex> p) {
         this.p = p;
+        
+        edges = new ArrayList<>();
 
         n = new Vector(p.get(1).x - p.get(0).x, p.get(1).y - p.get(0).y, p.get(1).z - p.get(0).z).CrossProduct(new Vector(p.get(2).x - p.get(1).x, p.get(2).y - p.get(1).y, p.get(2).z - p.get(1).z));
-
+        for (int i = 1; i < p.size(); i++) {
+            Vertex temp = p.get(i);
+            Vertex temp0 = p.get(i-1);
+            edges.add(new Vector(temp.x-temp0.x,temp.y-temp0.y,temp.z-temp0.z));
+        }
+        edges.add(new Vector(p.get(0).x-p.get(p.size()-1).x,p.get(0).y-p.get(p.size()-1).y,p.get(0).z-p.get(p.size()-1).z));
     }
 
     /**
@@ -65,6 +73,10 @@ public class Polygon3D {
         Color c1 = new Color((int) (255 * p1.k), (int) (255 * p1.k), (int) (255 * p1.k));
         Color c2 = new Color((int) (255 * p2.k), (int) (255 * p2.k), (int) (255 * p2.k));
         
-        return new Polygon2D(x, y, dist / this.p.size(), p1Projection, p2Projection, c1, c2);
+        double intens = n.DotProduct(lightSource);
+        intens = intens<0?0:intens;
+        Color color = new Color((int) (255 * intens), (int) (255 * intens), (int) (255 * intens));
+        
+        return new Polygon2D(x, y, dist / this.p.size(), p1Projection, p2Projection, c1, c2,color);
     }
 }

@@ -35,6 +35,10 @@ public class Vector {
      * @return
      */
     public Vector CrossProduct(Vector v) {
+        return new Vector(z * v.y - y * v.z, x * v.z - z * v.x, y * v.x - x * v.y);
+    }
+    
+    public Vector CrossProductRH(Vector v) {
         return new Vector(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
 
@@ -46,6 +50,10 @@ public class Vector {
         this.x *= -1;
         this.y *= -1;
         this.z *= -1;
+    }
+    
+    public Vector VectorSubstract(Vector v){
+        return new Vector(this.x-v.x,this.y-v.y,this.z-v.z);
     }
 
 //    public void Transform(double[] v){
